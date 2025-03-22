@@ -20,7 +20,7 @@
    ./gradlew bootRun
    ```
 
-3. API будет доступно по адресу: http://localhost:8080.
+3. API будет доступно по адресу: http://localhost:8080/api.
 4. Консоль H2 Database: http://localhost:8080/h2-console.
 
 ## Тестирование <a name="tests"></a>
@@ -43,7 +43,7 @@ ${path-to-dir}/build/reports/jacoco/test/html/index.html
 
 1. CDR
    - POST ```/api/cdr-reports``` - создать отчёт по номеру абонента за промежуток времени
-   - GET ```/{requestId}/status``` - проверка статуса по UUID (у всех базово COMPLETE, но можно доработать) 
+   - GET ```/api/cdr-reports/{requestId}/status``` - проверка статуса по UUID (у всех базово COMPLETE, но можно доработать) 
 2. UDR
    - GET ```/api/udr/by-msisdn``` - вернуть UDR запись абонента за нужный месяц или весь период по номеру телефона
    - GET ```/api/udr/all``` - вернуть UDR записи всех абонентов за определённый месяц
