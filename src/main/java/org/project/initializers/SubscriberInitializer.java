@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Класс инициализации первых десяти абонентов.
+ */
 @Component
 public class SubscriberInitializer {
     private final SubscriberRepository subscriberRepository;

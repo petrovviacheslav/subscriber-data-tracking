@@ -9,6 +9,9 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Интерфейс с методами для взаимодействия с таблицей CallDataRecord из базы данных.
+ */
 @Repository
 public interface CallDataRecordRepository extends JpaRepository<CallDataRecord, Long> {
     List<CallDataRecord> findByCallerNumber(String callerNumber);

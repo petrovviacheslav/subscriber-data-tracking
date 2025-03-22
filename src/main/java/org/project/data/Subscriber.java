@@ -3,6 +3,9 @@ package org.project.data;
 import jakarta.persistence.*;
 import lombok.*;
 
+/**
+ * Класс абонента.
+ */
 @Entity
 @Table(name = "Subcribers")
 @Setter

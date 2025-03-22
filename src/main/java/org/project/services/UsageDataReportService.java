@@ -11,6 +11,11 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Класс для работы с UDR.
+ * <p>
+ * Этот класс предоставляет методы для создания UDR записей.
+ */
 @Service
 public class UsageDataReportService {
     private final CallDataRecordRepository cdrRepository;
@@ -22,6 +27,15 @@ public class UsageDataReportService {
         this.subscriberService = subscriberService;
     }
 
+    /**
+     * Создание UDR по номеру телефона и заданному месяцу (опционально).
+     *
+     * @param msisdn  номер телефона абонента.
+     * @param year год.
+     * @param month месяц.
+     *
+     * @return UsageDataReport.
+     */
     public UsageDataReport getUDRByMsisdn(String msisdn, String year, String month) {
         List<CallDataRecord> cdr_by_caller = cdrRepository.findByCallerNumber(msisdn);
         List<CallDataRecord> cdr_by_receiver = cdrRepository.findByReceiverNumber(msisdn);
@@ -57,6 +71,14 @@ public class UsageDataReportService {
         return udr;
     }
 
+    /**
+     * UDR всех пользователей по заданному месяцу.
+     *
+     * @param year год.
+     * @param month месяц.
+     *
+     * @return список UsageDataReport.
+     */
     public List<UsageDataReport> getUDRsForAllSubscribers(String year, String month) {
         List<Subscriber> subscribers = subscriberService.getAllSubscribers();
         List<UsageDataReport> udRs = new ArrayList<>();
@@ -69,6 +91,13 @@ public class UsageDataReportService {
         return udRs;
     }
 
+    /**
+     * Форматирование даты.
+     *
+     * @param seconds секунды.
+     *
+     * @return строка, отформатированная в соответствии с шаблоном.
+     */
     public String formatDuration(long seconds) {
         long hours = seconds / 3600;
         long minutes = (seconds % 3600) / 60;

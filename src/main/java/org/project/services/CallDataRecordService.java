@@ -89,6 +89,15 @@ public class CallDataRecordService {
         return subscribers.get(random.nextInt(subscribers.size()));
     }
 
+    /**
+     * Создание отчета с CDR.
+     *
+     * @param msisdn номер абонента.
+     * @param start минимальная граница для времени начала разговора.
+     * @param end максимальная граница для времени конца разговора.
+     *
+     * @return уникальный UUID.
+     */
     public UUID generateCdrReport(String msisdn, LocalDateTime start, LocalDateTime end)
             throws IOException {
 

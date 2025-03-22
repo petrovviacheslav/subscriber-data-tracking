@@ -7,7 +7,7 @@
    Ответ:
    ```http request
    HTTP/1.1 202 
-   Headers ...
+   Headers
    
    {
    "status": "IN_PROGRESS",
@@ -23,7 +23,7 @@
    Ответ:
    ```http request
    HTTP/1.1 200 
-   Headers ...
+   Headers
    
    {
    "msisdn": "79996667755",
@@ -43,7 +43,7 @@
    Ответ:
    ```http request
    HTTP/1.1 200 
-   Headers ...
+   Headers
       
    [
    {

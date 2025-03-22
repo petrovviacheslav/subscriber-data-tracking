@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * Контроллер, отвечающий за обработку запросов создания и возвращения UDR записей.
+ */
 @RestController
 @RequestMapping("/api/udr")
 public class UsageDataReportController {
