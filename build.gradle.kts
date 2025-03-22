@@ -1,7 +1,6 @@
 plugins {
     java
     jacoco
-    war
     id("org.springframework.boot") version "3.2.1"
     id("io.spring.dependency-management") version "1.1.4"
 }
@@ -14,7 +13,6 @@ repositories {
 }
 
 dependencies {
-
     implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-security")
@@ -33,9 +31,16 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
 }
 
+tasks.withType<Jar> {
+    manifest {
+        attributes["Main-Class"] = "org.project.ApplicationStarter"
+    }
+}
+
 tasks.withType<Test> {
     useJUnitPlatform()
 }
+
 tasks.withType<JavaCompile> {
     sourceCompatibility = "17"
     targetCompatibility = "17"

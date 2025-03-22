@@ -6,6 +6,7 @@ build/reports/
 build/test-results/
 build/tmp/
 build/resources/
+build/resolvedMainClassName
 
 !src/**/build/
 .idea
