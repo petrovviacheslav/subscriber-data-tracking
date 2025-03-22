@@ -1,5 +1,12 @@
 .gradle
-**/build/
+build/classes/
+build/generated/
+build/jacoco/
+build/reports/
+build/test-results/
+build/tmp/
+build/resources/
+
 !src/**/build/
 .idea
 reports
