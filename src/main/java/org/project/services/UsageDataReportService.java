@@ -4,7 +4,6 @@ import org.project.data.CallDataRecord;
 import org.project.repository.CallDataRecordRepository;
 import org.project.data.Subscriber;
 import org.project.data.UsageDataReport;
-import org.project.repository.SubscriberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,12 +14,12 @@ import java.util.List;
 @Service
 public class UsageDataReportService {
     private final CallDataRecordRepository cdrRepository;
-    private final SubscriberRepository subscriberRepository;
+    private final SubscriberService subscriberService;
 
     @Autowired
-    public UsageDataReportService(CallDataRecordRepository cdrRepository, SubscriberRepository subscriberRepository) {
+    public UsageDataReportService(CallDataRecordRepository cdrRepository, SubscriberService subscriberService) {
         this.cdrRepository = cdrRepository;
-        this.subscriberRepository = subscriberRepository;
+        this.subscriberService = subscriberService;
     }
 
     public UsageDataReport getUDRByMsisdn(String msisdn, String year, String month) {
@@ -59,7 +58,7 @@ public class UsageDataReportService {
     }
 
     public List<UsageDataReport> getUDRsForAllSubscribers(String year, String month) {
-        List<Subscriber> subscribers = subscriberRepository.findAll();
+        List<Subscriber> subscribers = subscriberService.getAllSubscribers();
         List<UsageDataReport> udRs = new ArrayList<>();
 
         for (Subscriber subscriber : subscribers) {

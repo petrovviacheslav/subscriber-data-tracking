@@ -10,8 +10,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.project.data.Subscriber;
 import org.project.repository.CallDataRecordRepository;
-import org.project.repository.SubscriberRepository;
 import org.project.services.CallDataRecordService;
+import org.project.services.SubscriberService;
 
 import java.util.List;
 
@@ -28,17 +28,15 @@ class CallDataRecordServiceTest {
     private CallDataRecordRepository cdrRepository;
 
     @Mock
-    private SubscriberRepository subscriberRepository;
+    private SubscriberService subscriberService;
 
     @InjectMocks
     private CallDataRecordService service;
 
-    private List<String> testNumbers;
-
     @BeforeEach
     void setUp() {
-        testNumbers = List.of("79991112233", "79876543210");
-        when(subscriberRepository.findAll()).thenReturn(
+        List<String> testNumbers = List.of("79991112233", "79876543210");
+        when(subscriberService.getAllSubscribers()).thenReturn(
                 testNumbers.stream()
                         .map(number -> {
                             Subscriber s = new Subscriber();
@@ -70,8 +68,8 @@ class CallDataRecordServiceTest {
     @DisplayName("Генерация CDR отчётов для 2 пользователей")
     void generateCDRReport_shouldCreateReport() {
 
-        when(subscriberRepository.existsByMsisdn("79991112233")).thenReturn(true);
-        when(subscriberRepository.existsByMsisdn("79876543210")).thenReturn(true);
+        when(subscriberService.existsByMsisdn("79991112233")).thenReturn(true);
+        when(subscriberService.existsByMsisdn("79876543210")).thenReturn(true);
 
         DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
         LocalDateTime dateTime1 = LocalDateTime.parse("2025-01-01T00:00:00", formatter);

@@ -18,6 +18,9 @@ public class SubscriberInitializer {
         this.subscriberRepository = subscriberRepository;
     }
 
+    /**
+     * Инициализация первых абонентов и запись из в бд.
+     */
     @PostConstruct
     public void initSubscribers() {
         List<String> numbers = Arrays.asList("79996667755", "79876543221", "79992221122", "79123456789", "79995558888", "79874443333", "79997776666", "79111112222", "79993334444", "79888885555");

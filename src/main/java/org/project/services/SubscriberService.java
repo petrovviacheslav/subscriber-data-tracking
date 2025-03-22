@@ -16,7 +16,16 @@ public class SubscriberService {
         this.subscriberRepository = subscriberRepository;
     }
 
+    /**
+     * Получение списка всех абонентов.
+     *
+     * @return список абонентов.
+     */
     public List<Subscriber> getAllSubscribers() {
         return subscriberRepository.findAll();
+    }
+
+    public boolean existsByMsisdn(String msisdn) {
+        return subscriberRepository.existsByMsisdn(msisdn);
     }
 }

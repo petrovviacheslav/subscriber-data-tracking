@@ -21,6 +21,15 @@ public class UsageDataReportController {
         this.udrService = udrService;
     }
 
+    /**
+     * Возвращение UDR по номеру телефона и заданному месяцу (опционально).
+     *
+     * @param msisdn  номер телефона абонента.
+     * @param year год.
+     * @param month месяц.
+     *
+     * @return UsageDataReport в json формате.
+     */
     @GetMapping("/by-msisdn")
     public UsageDataReport getUDRByMsisdn(@RequestParam String msisdn, @RequestParam(required = false) String year, @RequestParam(required = false) String month) {
         if (year == null || month == null) {
@@ -30,6 +39,14 @@ public class UsageDataReportController {
         }
     }
 
+    /**
+     * Возвращение UDR всех пользователей по заданному месяцу.
+     *
+     * @param year год.
+     * @param month месяц.
+     *
+     * @return список UsageDataReport в json формате.
+     */
     @GetMapping("/all")
     public List<UsageDataReport> getUDRsForAllSubscribers(@RequestParam String year, @RequestParam String month) {
         return udrService.getUDRsForAllSubscribers(year, month);

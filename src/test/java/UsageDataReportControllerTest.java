@@ -1,12 +1,8 @@
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.project.ApplicationStarter;
-import org.project.controllers.UsageDataReportController;
-import org.project.services.UsageDataReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -19,9 +15,6 @@ public class UsageDataReportControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-
-    @InjectMocks
-    private UsageDataReportService usageDataReportService;
 
     @Test
     public void getUdr_shouldReturnCorrectData() throws Exception {

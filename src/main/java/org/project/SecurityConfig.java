@@ -13,6 +13,9 @@ import java.util.List;
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
+/**
+ * Конфигурационный класс для настройки доступных http-методов и путей.
+ */
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -32,8 +35,7 @@ public class SecurityConfig {
                 }))
                 // Настройка доступа к конечным точкам
                 .authorizeHttpRequests(request -> request
-                        // Можно указать конкретный путь, * - 1 уровень вложенности, ** - любое количество уровней вложенности
-                        .requestMatchers("/**").permitAll());
+                        .requestMatchers("/api/**").permitAll());
         http.sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS));
         return http.build();
     }

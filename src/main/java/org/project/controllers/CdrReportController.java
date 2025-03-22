@@ -43,6 +43,13 @@ public class CdrReportController {
         }
     }
 
+    /**
+     * Возвращение статуса отчёта по UUID.
+     *
+     * @param requestId UUID отчёта.
+     *
+     * @return статус и UUID в json формате.
+     */
     @GetMapping("/{requestId}/status")
     public ResponseEntity<?> checkStatus(@PathVariable UUID requestId) {
         return ResponseEntity.ok(Map.of(

@@ -2,12 +2,11 @@ package org.project.services;
 
 import com.opencsv.CSVWriter;
 import jakarta.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
+
 import org.project.data.CallDataRecord;
 import org.project.data.Subscriber;
 import org.project.repository.CallDataRecordRepository;
 import org.project.repository.SubscriberRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.FileWriter;
@@ -16,25 +15,29 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-
+/**
+ * Класс для работы с CDR.
+ * <p>
+ * Этот класс предоставляет методы для создания CDR и отчётов в формате .csv с CDR
+ */
 @Service
 public class CallDataRecordService {
     private final CallDataRecordRepository cdrRepository;
-    private final SubscriberRepository subscriberRepository;
+    private final SubscriberService subscriberService;
     private final Random random = new Random();
-    //    private final List<String> subscribers = Arrays.asList("79996667755", "79876543221", "79992221122", "79123456789", "79995558888", "79874443333", "79997776666", "79111112222", "79993334444", "79888885555");;
 
-    public CallDataRecordService(CallDataRecordRepository cdrRepository, SubscriberRepository subscriberRepository) {
+    public CallDataRecordService(CallDataRecordRepository cdrRepository, SubscriberService subscriberService) {
         this.cdrRepository = cdrRepository;
-        this.subscriberRepository = subscriberRepository;
+        this.subscriberService = subscriberService;
     }
 
-
+    /**
+     * Генерирование записей за 1 год.
+     */
     public void generateCDRRecords() {
         for (int year = 0; year < 1; year++) {
             for (int month = 1; month <= 12; month++) {
@@ -49,6 +52,14 @@ public class CallDataRecordService {
         }
     }
 
+
+    /**
+     * Создание CDR со случайным временем разговора в нужный час дня.
+     *
+     * @param month  месяц разговора.
+     * @param day день (месяца) разговора.
+     * @param hour час разговора.
+     */
     public void generateCallRecord(int month, int day, int hour) {
         Subscriber caller = getRandomSubscriber();
         Subscriber receiver = getRandomSubscriber();
@@ -68,8 +79,13 @@ public class CallDataRecordService {
         cdrRepository.save(cdr);
     }
 
+    /**
+     * Возвращение случайного абонента.
+     *
+     * @return абонент.
+     */
     private Subscriber getRandomSubscriber() {
-        List<Subscriber> subscribers = subscriberRepository.findAll();
+        List<Subscriber> subscribers = subscriberService.getAllSubscribers();
         return subscribers.get(random.nextInt(subscribers.size()));
     }
 
@@ -103,14 +119,24 @@ public class CallDataRecordService {
         return reportId;
     }
 
+    /**
+     * Проверка номера телефона и времени разговора.
+     *
+     * @param msisdn  номер телефона абонента.
+     * @param start время начала разговора.
+     * @param end время окончания разговора.
+     *
+     * @throws IllegalArgumentException Если абонента нет в базе данных или разговор длился отрицательное время.
+     */
     private void validateRequest(String msisdn, LocalDateTime start, LocalDateTime end) {
-        if (!subscriberRepository.existsByMsisdn(msisdn)) {
+        if (!subscriberService.existsByMsisdn(msisdn)) {
             throw new IllegalArgumentException("Subscriber not found");
         }
         if (start.isAfter(end)) {
             throw new IllegalArgumentException("Invalid date range");
         }
     }
+
 
     private Path prepareReportDirectory() throws IOException {
         Path dir = Paths.get("reports");

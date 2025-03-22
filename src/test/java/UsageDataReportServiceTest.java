@@ -7,7 +7,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.project.data.CallDataRecord;
 import org.project.data.UsageDataReport;
 import org.project.repository.CallDataRecordRepository;
-import org.project.repository.SubscriberRepository;
 import org.project.services.UsageDataReportService;
 
 import java.time.LocalDateTime;
@@ -24,9 +23,6 @@ class UsageDataReportServiceTest {
 
     @Mock
     private CallDataRecordRepository cdrRepository;
-
-    @Mock
-    private SubscriberRepository subscriberRepository;
 
     @InjectMocks
     private UsageDataReportService service;
