@@ -13,18 +13,18 @@ jobs:
     steps:
       # Шаг 1: Проверка кода
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Шаг 2: Установка JDK
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
 
       # Шаг 3: Кэширование Gradle
       - name: Cache Gradle packages
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
@@ -37,7 +37,7 @@ jobs:
 
       # Шаг 5: Загрузка отчета о покрытии (опционально)
       - name: Upload coverage report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: coverage-report
           path: build/reports/jacoco/test/html/
