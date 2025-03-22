@@ -36,7 +36,7 @@ public class CdrReportController {
 
             return ResponseEntity.badRequest().body(
                     Map.of(
-                            "error", e.getMessage() != null ? e.getMessage() : "error when creating the report",
+                            "error", e.getMessage() != null ? e.getMessage() : "Error when creating the report",
                             "requestId", UUID.randomUUID()
                     )
             );
@@ -45,7 +45,6 @@ public class CdrReportController {
 
     @GetMapping("/{requestId}/status")
     public ResponseEntity<?> checkStatus(@PathVariable UUID requestId) {
-        // Реализация проверки статуса (можно хранить в БД или кэше)
         return ResponseEntity.ok(Map.of(
                 "status", "COMPLETED",
                 "requestId", requestId

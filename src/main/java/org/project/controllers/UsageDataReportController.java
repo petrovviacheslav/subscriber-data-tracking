@@ -24,8 +24,7 @@ public class UsageDataReportController {
     @GetMapping("/by-msisdn")
     public UsageDataReport getUDRByMsisdn(@RequestParam String msisdn, @RequestParam(required = false) String year, @RequestParam(required = false) String month) {
         if (year == null || month == null) {
-            // Возвращаем за весь период
-            return udrService.getUDRByMsisdn(msisdn, null, null);
+            return udrService.getUDRByMsisdn(msisdn, null, null); // весь период
         } else {
             return udrService.getUDRByMsisdn(msisdn, year, month);
         }
