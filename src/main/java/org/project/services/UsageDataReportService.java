@@ -61,7 +61,7 @@ public class UsageDataReportService {
         return udRs;
     }
 
-    private String formatDuration(long seconds) {
+    public String formatDuration(long seconds) {
         long hours = seconds / 3600;
         long minutes = (seconds % 3600) / 60;
         long secs = seconds % 60;

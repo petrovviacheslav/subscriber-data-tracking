@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/udr")
+@RequestMapping("/api/udr")
 public class UsageDataReportController {
 
     private final UsageDataReportService udrService;

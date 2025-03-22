@@ -1,6 +1,5 @@
-package org.project.initializers;
+package org.project;
 
-import org.project.ApplicationStarter;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
