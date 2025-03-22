@@ -33,25 +33,25 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
 }
 
-
+tasks.withType<Test> {
+    useJUnitPlatform()
+}
 tasks.withType<JavaCompile> {
     sourceCompatibility = "17"
     targetCompatibility = "17"
 }
 
 tasks.test {
-    useJUnitPlatform()
     finalizedBy(tasks.jacocoTestReport)
+    finalizedBy(tasks.jacocoTestCoverageVerification)
 }
 
 jacoco {
     toolVersion = "0.8.8"
 }
 
+// Генерация отчета
 tasks.jacocoTestReport {
-    dependsOn(tasks.test)
-
-    // Генерация отчета
     reports {
         xml.required.set(true)
         csv.required.set(false)
@@ -69,9 +69,4 @@ tasks.jacocoTestCoverageVerification {
             }
         }
     }
-}
-
-// Задача jacocoTestReport должна выполняться перед jacocoTestCoverageVerification
-tasks.jacocoTestReport {
-    finalizedBy(tasks.jacocoTestCoverageVerification)
 }
