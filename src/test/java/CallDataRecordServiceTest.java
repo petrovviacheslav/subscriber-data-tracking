@@ -15,8 +15,10 @@ import org.project.services.CallDataRecordService;
 
 import java.util.List;
 
-import static org.junit.Assert.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -45,6 +47,7 @@ class CallDataRecordServiceTest {
                         })
                         .toList()
         );
+
     }
 
     @Test
@@ -64,14 +67,21 @@ class CallDataRecordServiceTest {
     }
 
     @Test
-    @DisplayName("Генерация записи с одинаковыми номерами абонентов")
-    void generateCallRecord_shouldHandleSameNumbers() {
-        when(subscriberRepository.findAll()).thenReturn(
-                List.of(new Subscriber("79991112233"))
-        );
+    @DisplayName("Генерация CDR отчётов для 2 пользователей")
+    void generateCDRReport_shouldCreateReport() {
 
-        assertThrows(IllegalStateException.class, () ->
-                service.generateCallRecord(1, 1, 12)
-        );
+        when(subscriberRepository.existsByMsisdn("79991112233")).thenReturn(true);
+        when(subscriberRepository.existsByMsisdn("79876543210")).thenReturn(true);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+        LocalDateTime dateTime1 = LocalDateTime.parse("2025-01-01T00:00:00", formatter);
+        LocalDateTime dateTime2 = LocalDateTime.parse("2025-01-21T00:00:00", formatter);
+        service.generateCDRRecords();
+
+        assertDoesNotThrow(() ->
+                service.generateCdrReport("79991112233", dateTime1, dateTime2));
+        assertDoesNotThrow(() ->
+                service.generateCdrReport("79876543210", dateTime1, dateTime2));
     }
+
 }

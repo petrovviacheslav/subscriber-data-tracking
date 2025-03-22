@@ -14,64 +14,64 @@ repositories {
 }
 
 dependencies {
-    testImplementation(platform("org.junit:junit-bom:5.10.0"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
 
     implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
-    implementation("org.springframework.boot:spring-boot-starter-mail")
-    implementation("jakarta.enterprise:jakarta.enterprise.cdi-api:3.0.0")
-    implementation("junit:junit:4.13.1")
     implementation("com.opencsv:opencsv:5.7.1")
 
     compileOnly("org.projectlombok:lombok")
     runtimeOnly("com.h2database:h2")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.2")
 
     annotationProcessor("org.projectlombok:lombok")
-//    providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
 
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.mockito:mockito-core:5.3.1")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
 }
 
-jacoco {
-    toolVersion = "0.8.7"
+
+tasks.withType<JavaCompile> {
+    sourceCompatibility = "17"
+    targetCompatibility = "17"
 }
 
 tasks.test {
+    useJUnitPlatform()
     finalizedBy(tasks.jacocoTestReport)
 }
 
-//tasks.jacocoTestReport {
-//    reports {
-//        xml. = true
-//        html.isEnabled = true
-//        csv.isEnabled = false
-//    }
-//}
+jacoco {
+    toolVersion = "0.8.8"
+}
 
+tasks.jacocoTestReport {
+    dependsOn(tasks.test)
+
+    // Генерация отчета
+    reports {
+        xml.required.set(true)
+        csv.required.set(false)
+        html.required.set(true)
+    }
+
+}
+
+// Проверка покрытия кода
 tasks.jacocoTestCoverageVerification {
     violationRules {
         rule {
             limit {
-                minimum = "0.75".toBigDecimal()
+                minimum = "0.75".toBigDecimal() // Минимальное покрытие 75%
             }
         }
     }
 }
 
-tasks.check {
-    dependsOn(tasks.jacocoTestCoverageVerification)
-}
-
-tasks.register("testCoverage") {
-    group = "verification"
-    description = "Runs the unit tests with coverage."
-    dependsOn(tasks.test, tasks.jacocoTestReport, tasks.jacocoTestCoverageVerification)
-
-//    tasks.jacocoTestReport?.mustRunAfter(tasks.test)
-//    tasks.jacocoTestCoverageVerification?.mustRunAfter(tasks.jacocoTestReport)
+// Задача jacocoTestReport должна выполняться перед jacocoTestCoverageVerification
+tasks.jacocoTestReport {
+    finalizedBy(tasks.jacocoTestCoverageVerification)
 }

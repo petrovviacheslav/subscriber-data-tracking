@@ -36,11 +36,20 @@ public class UsageDataReportService {
         long outgoingDuration = 0;
 
         for (CallDataRecord cdr : cdr_by_caller) {
-            outgoingDuration += Duration.between(cdr.getStartTime(), cdr.getEndTime()).toSeconds();
+            if (cdr.getCallerNumber().equals(msisdn)) {
+                outgoingDuration += Duration.between(cdr.getStartTime(), cdr.getEndTime()).toSeconds();
+            } else {
+                incomingDuration += Duration.between(cdr.getStartTime(), cdr.getEndTime()).toSeconds();
+            }
+
         }
 
         for (CallDataRecord cdr : cdr_by_receiver) {
-            incomingDuration += Duration.between(cdr.getStartTime(), cdr.getEndTime()).toSeconds();
+            if (cdr.getCallerNumber().equals(msisdn)) {
+                outgoingDuration += Duration.between(cdr.getStartTime(), cdr.getEndTime()).toSeconds();
+            } else {
+                incomingDuration += Duration.between(cdr.getStartTime(), cdr.getEndTime()).toSeconds();
+            }
         }
 
         udr.getIncomingCall().setTotalTime(formatDuration(incomingDuration));

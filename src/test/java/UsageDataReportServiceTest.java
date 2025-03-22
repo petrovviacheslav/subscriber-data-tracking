@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
+
 @ExtendWith(MockitoExtension.class)
 class UsageDataReportServiceTest {
 
@@ -39,7 +40,7 @@ class UsageDataReportServiceTest {
         UsageDataReport report = service.getUDRByMsisdn("79991112233", "2025", "03");
 
         assertAll(
-                //() -> assertEquals("00:00:00", report.getIncomingCall().getTotalTime()),
+                () -> assertEquals("00:00:00", report.getIncomingCall().getTotalTime()),
                 () -> assertEquals("00:00:00", report.getOutgoingCall().getTotalTime())
         );
     }
@@ -58,13 +59,15 @@ class UsageDataReportServiceTest {
         UsageDataReport report = service.getUDRByMsisdn("79991112233", "2025", "03");
 
         assertAll(
-                //() -> assertEquals("00:05:00", report.getOutgoingCall().getTotalTime()),
+                () -> assertEquals("00:05:00", report.getOutgoingCall().getTotalTime()),
                 () -> assertEquals("00:03:00", report.getIncomingCall().getTotalTime())
         );
     }
 
     private CallDataRecord createCDR(String type, String caller, String receiver, int minutes) {
         LocalDateTime start = LocalDateTime.now();
-        return new CallDataRecord(type, caller, receiver, start, start.plusMinutes(minutes));
+        CallDataRecord cdr = new CallDataRecord(type, caller, receiver, start, start.plusMinutes(minutes));
+        cdrRepository.save(cdr);
+        return cdr;
     }
 }

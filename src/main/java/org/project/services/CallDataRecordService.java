@@ -1,6 +1,7 @@
 package org.project.services;
 
 import com.opencsv.CSVWriter;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.project.data.CallDataRecord;
 import org.project.data.Subscriber;
@@ -15,21 +16,26 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
 
 @Service
-@RequiredArgsConstructor
 public class CallDataRecordService {
     private final CallDataRecordRepository cdrRepository;
     private final SubscriberRepository subscriberRepository;
     private final Random random = new Random();
-    private List<Subscriber> subscribers;
+    //    private final List<String> subscribers = Arrays.asList("79996667755", "79876543221", "79992221122", "79123456789", "79995558888", "79874443333", "79997776666", "79111112222", "79993334444", "79888885555");;
+
+    public CallDataRecordService(CallDataRecordRepository cdrRepository, SubscriberRepository subscriberRepository) {
+        this.cdrRepository = cdrRepository;
+        this.subscriberRepository = subscriberRepository;
+    }
+
 
     public void generateCDRRecords() {
-        subscribers = subscriberRepository.findAll();
         for (int year = 0; year < 1; year++) {
             for (int month = 1; month <= 12; month++) {
                 for (int day = 1; day <= 28; day++) {
@@ -63,9 +69,9 @@ public class CallDataRecordService {
     }
 
     private Subscriber getRandomSubscriber() {
+        List<Subscriber> subscribers = subscriberRepository.findAll();
         return subscribers.get(random.nextInt(subscribers.size()));
     }
-
 
     public UUID generateCdrReport(String msisdn, LocalDateTime start, LocalDateTime end)
             throws IOException {

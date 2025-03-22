@@ -6,6 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.UUID;
@@ -32,9 +33,10 @@ public class CdrReportController {
                     )
             );
         } catch (Exception e) {
+
             return ResponseEntity.badRequest().body(
                     Map.of(
-                            "error", e.getMessage(),
+                            "error", e.getMessage() != null ? e.getMessage() : "error when creating the report",
                             "requestId", UUID.randomUUID()
                     )
             );

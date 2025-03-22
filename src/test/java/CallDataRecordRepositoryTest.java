@@ -1,12 +1,13 @@
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.project.ApplicationStarter;
 import org.project.data.CallDataRecord;
 import org.project.repository.CallDataRecordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ContextConfiguration;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,41 +15,39 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@ContextConfiguration(classes = ApplicationStarter.class)
 class CallDataRecordRepositoryTest {
 
     @Autowired
     private TestEntityManager entityManager;
 
-    @MockBean
+    @Autowired
     private CallDataRecordRepository repository;
 
     @Test
-    @DisplayName("Поиск записей по номеру и периоду")
     void findByMsisdnAndPeriod_shouldReturnFilteredResults() {
-        LocalDateTime start = LocalDateTime.parse("2025-03-01T00:00:00");
-        LocalDateTime end = LocalDateTime.parse("2025-03-31T23:59:59");
+        // Arrange
+        LocalDateTime start = LocalDateTime.of(2025, 3, 1, 0, 0);
+        LocalDateTime end = LocalDateTime.of(2025, 3, 31, 23, 59);
 
-        CallDataRecord valid = createCDR(start.plusDays(1), end.minusDays(1));
-        CallDataRecord invalid = createCDR(end.plusDays(1), end.plusDays(2));
+        CallDataRecord invalidRecord = new CallDataRecord(
+                "01", "79991112233", "79876543210",
+                end.plusDays(1), end.plusDays(2)
+        );
 
-        entityManager.persist(valid);
-        entityManager.persist(invalid);
+        CallDataRecord validRecord = new CallDataRecord(
+                "02", "79876543210", "79991112233",
+                start.plusDays(1), end.minusDays(1)
+        );
+
+        entityManager.persist(validRecord);
+        entityManager.persist(invalidRecord);
 
         List<CallDataRecord> results = repository.findByMsisdnAndPeriod(
-                "79991112233", start, end
+                "79876543210", start, end
         );
 
         assertEquals(1, results.size());
-    }
-
-    private CallDataRecord createCDR(LocalDateTime start, LocalDateTime end) {
-        return new CallDataRecord(
-                "01",
-                "79991112233",
-                "79876543210",
-                start,
-                end
-        );
+        assertEquals(validRecord.getCallType(), results.get(0).getCallType());
     }
 }

@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class CallDataRecord {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @NonNull
@@ -26,5 +26,4 @@ public class CallDataRecord {
     private LocalDateTime startTime;
     @NonNull
     private LocalDateTime endTime;
-    // Геттеры и сеттеры
 }
