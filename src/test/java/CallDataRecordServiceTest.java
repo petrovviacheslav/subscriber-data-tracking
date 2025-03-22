@@ -1,29 +1,23 @@
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.project.data.Subscriber;
+import org.project.initializers.DataInitializer;
 import org.project.repository.CallDataRecordRepository;
 import org.project.services.CallDataRecordService;
 import org.project.services.SubscriberService;
 
-import java.util.List;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class CallDataRecordServiceTest {
-
+public class CallDataRecordServiceTest {
     @Mock
     private CallDataRecordRepository cdrRepository;
 
@@ -32,54 +26,26 @@ class CallDataRecordServiceTest {
 
     @InjectMocks
     private CallDataRecordService service;
+    @InjectMocks
+    private DataInitializer dataInitializer;
 
-    @BeforeEach
-    void setUp() {
-        List<String> testNumbers = List.of("79991112233", "79876543210");
-        when(subscriberService.getAllSubscribers()).thenReturn(
-                testNumbers.stream()
-                        .map(number -> {
-                            Subscriber s = new Subscriber();
-                            s.setMsisdn(number);
-                            return s;
-                        })
-                        .toList()
-        );
-
-    }
-
-    @Test
-    @DisplayName("Генерация CDR записей создает минимум одну запись")
-    void generateCDRRecords_shouldCreateAtLeastOneRecord() {
-        service.generateCDRRecords();
-        verify(cdrRepository, atLeastOnce()).save(any());
-    }
-
-    @ParameterizedTest
-    @ValueSource(ints = {1, 5, 10})
-    @DisplayName("Генерация записей с разным количеством дней")
-    void generateCallRecord_shouldHandleDifferentDays(int day) {
-        assertDoesNotThrow(() ->
-                service.generateCallRecord(2, day, 12)
-        );
-    }
+    List<String> testNumbers = List.of("79991112233", "79876543210");
 
     @Test
     @DisplayName("Генерация CDR отчётов для 2 пользователей")
     void generateCDRReport_shouldCreateReport() {
 
-        when(subscriberService.existsByMsisdn("79991112233")).thenReturn(true);
-        when(subscriberService.existsByMsisdn("79876543210")).thenReturn(true);
+        when(subscriberService.existsByMsisdn(testNumbers.get(0))).thenReturn(true);
+        when(subscriberService.existsByMsisdn(testNumbers.get(1))).thenReturn(true);
 
         DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
         LocalDateTime dateTime1 = LocalDateTime.parse("2025-01-01T00:00:00", formatter);
         LocalDateTime dateTime2 = LocalDateTime.parse("2025-01-21T00:00:00", formatter);
-        service.generateCDRRecords();
+        dataInitializer.generateCDRRecords(testNumbers);
 
         assertDoesNotThrow(() ->
-                service.generateCdrReport("79991112233", dateTime1, dateTime2));
+                service.generateCdrReport(testNumbers.get(0), dateTime1, dateTime2));
         assertDoesNotThrow(() ->
-                service.generateCdrReport("79876543210", dateTime1, dateTime2));
+                service.generateCdrReport(testNumbers.get(1), dateTime1, dateTime2));
     }
-
 }

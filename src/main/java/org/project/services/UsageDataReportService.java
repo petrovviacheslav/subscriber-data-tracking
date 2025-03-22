@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,15 +32,36 @@ public class UsageDataReportService {
     /**
      * Создание UDR по номеру телефона и заданному месяцу (опционально).
      *
-     * @param msisdn  номер телефона абонента.
-     * @param year год.
-     * @param month месяц.
-     *
+     * @param msisdn номер телефона абонента.
+     * @param year   год.
+     * @param month  месяц.
      * @return UsageDataReport.
      */
     public UsageDataReport getUDRByMsisdn(String msisdn, String year, String month) {
-        List<CallDataRecord> cdr_by_caller = cdrRepository.findByCallerNumber(msisdn);
-        List<CallDataRecord> cdr_by_receiver = cdrRepository.findByReceiverNumber(msisdn);
+        List<CallDataRecord> cdrs;
+        if (year == null || month == null) {
+            cdrs = cdrRepository.findByCallerNumberOrReceiverNumber(msisdn);
+        } else {
+            int year_int = Integer.parseInt(year);
+            int month_int = Integer.parseInt(month);
+            DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+            LocalDateTime start;
+            if (month_int < 10)
+                start = LocalDateTime.parse(String.format("%d-0%d-01T00:00:00", year_int, month_int), formatter);
+            else start = LocalDateTime.parse(String.format("%d-%d-01T00:00:00", year_int, month_int), formatter);
+
+            if (month_int == 11) {
+                month_int = 1;
+                year_int++;
+            } else month_int++;
+
+            LocalDateTime end;
+            if (month_int < 10)
+                end = LocalDateTime.parse(String.format("%d-0%d-01T00:00:00", year_int, month_int), formatter);
+            else end = LocalDateTime.parse(String.format("%d-%d-01T00:00:00", year_int, month_int), formatter);
+
+            cdrs = cdrRepository.findByMsisdnAndPeriod(msisdn, start, end);
+        }
 
         UsageDataReport udr = new UsageDataReport();
         udr.setMsisdn(msisdn);
@@ -48,21 +71,13 @@ public class UsageDataReportService {
         long incomingDuration = 0;
         long outgoingDuration = 0;
 
-        for (CallDataRecord cdr : cdr_by_caller) {
+        for (CallDataRecord cdr : cdrs) {
             if (cdr.getCallerNumber().equals(msisdn)) {
                 outgoingDuration += Duration.between(cdr.getStartTime(), cdr.getEndTime()).toSeconds();
             } else {
                 incomingDuration += Duration.between(cdr.getStartTime(), cdr.getEndTime()).toSeconds();
             }
 
-        }
-
-        for (CallDataRecord cdr : cdr_by_receiver) {
-            if (cdr.getCallerNumber().equals(msisdn)) {
-                outgoingDuration += Duration.between(cdr.getStartTime(), cdr.getEndTime()).toSeconds();
-            } else {
-                incomingDuration += Duration.between(cdr.getStartTime(), cdr.getEndTime()).toSeconds();
-            }
         }
 
         udr.getIncomingCall().setTotalTime(formatDuration(incomingDuration));
@@ -74,9 +89,8 @@ public class UsageDataReportService {
     /**
      * UDR всех пользователей по заданному месяцу.
      *
-     * @param year год.
+     * @param year  год.
      * @param month месяц.
-     *
      * @return список UsageDataReport.
      */
     public List<UsageDataReport> getUDRsForAllSubscribers(String year, String month) {
@@ -95,7 +109,6 @@ public class UsageDataReportService {
      * Форматирование даты.
      *
      * @param seconds секунды.
-     *
      * @return строка, отформатированная в соответствии с шаблоном.
      */
     public String formatDuration(long seconds) {

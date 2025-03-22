@@ -36,7 +36,7 @@ build/reports/jacoco/test/html/
 ``` 
 или по адресу 
 ```
-${path-to-dir}/build/reports/jacoco/test/html/index.html
+${path-to-project}/build/reports/jacoco/test/html/index.html
 ```
 
 ## API Endpoints <a name="api-endpoints"></a>

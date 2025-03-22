@@ -28,10 +28,10 @@
    {
    "msisdn": "79996667755",
    "incomingCall": {
-       "totalTime": "00:00:00"
+       "totalTime": "192:46:06"
    },
    "outgoingCall": {
-       "totalTime": "00:00:00"
+       "totalTime": "184:43:58"
    }
    }
    ```
@@ -49,91 +49,91 @@
    {
    "msisdn": "79996667755",
    "incomingCall": {
-       "totalTime": "00:00:00"
+       "totalTime": "13:20:28"
    },
    "outgoingCall": {
-        "totalTime": "00:00:00"
+       "totalTime": "18:51:04"
    }
    },
    {
    "msisdn": "79876543221",
    "incomingCall": {
-       "totalTime": "00:00:00"
+       "totalTime": "12:58:48"
    },
    "outgoingCall": {
-       "totalTime": "00:00:00"
+       "totalTime": "16:18:24"
    }
    },
    {
    "msisdn": "79992221122",
    "incomingCall": {
-       "totalTime": "00:00:00"
+       "totalTime": "23:09:29"
    },
    "outgoingCall": {
-       "totalTime": "00:00:00"
+       "totalTime": "16:51:14"
    }
    },
    {
    "msisdn": "79123456789",
    "incomingCall": {
-       "totalTime": "00:00:00"
+       "totalTime": "15:44:22"
    },
    "outgoingCall": {
-       "totalTime": "00:00:00"
+       "totalTime": "18:07:34"
    }
    },
    {
    "msisdn": "79995558888",
    "incomingCall": {
-       "totalTime": "00:00:00"
+       "totalTime": "19:54:15"
    },
    "outgoingCall": {
-       "totalTime": "00:00:00"
+       "totalTime": "11:26:05"
    }
    },
    {
    "msisdn": "79874443333",
    "incomingCall": {
-       "totalTime": "00:00:00"
+       "totalTime": "18:35:32"
    },
    "outgoingCall": {
-       "totalTime": "00:00:00"
+       "totalTime": "13:33:45"
    }
    },
    {
    "msisdn": "79997776666",
    "incomingCall": {
-       "totalTime": "00:00:00"
+       "totalTime": "12:34:44"
    },
    "outgoingCall": {
-       "totalTime": "00:00:00"
+       "totalTime": "13:46:59"
    }
    },
    {
    "msisdn": "79111112222",
    "incomingCall": {
-       "totalTime": "00:00:00"
+       "totalTime": "12:47:02"
    },
    "outgoingCall": {
-       "totalTime": "00:00:00"
+       "totalTime": "17:34:20"
    }
    },
    {
    "msisdn": "79993334444",
    "incomingCall": {
-       "totalTime": "00:00:00"
+       "totalTime": "14:21:10"
    },
    "outgoingCall": {
-       "totalTime": "00:00:00"
+       "totalTime": "16:24:40"
    }
    },
    {
    "msisdn": "79888885555",
    "incomingCall": {
-       "totalTime": "00:00:00"
+       "totalTime": "15:45:18"
    },
    "outgoingCall": {
-       "totalTime": "00:00:00"
+       "totalTime": "16:17:03"
    }
    }
    ]

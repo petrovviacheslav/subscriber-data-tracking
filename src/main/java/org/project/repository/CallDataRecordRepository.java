@@ -14,8 +14,9 @@ import java.util.List;
  */
 @Repository
 public interface CallDataRecordRepository extends JpaRepository<CallDataRecord, Long> {
-    List<CallDataRecord> findByCallerNumber(String callerNumber);
-    List<CallDataRecord> findByReceiverNumber(String receiverNumber);
+    @Query("SELECT c FROM CallDataRecord c WHERE " +
+            "c.callerNumber = :msisdn OR c.receiverNumber = :msisdn")
+    List<CallDataRecord> findByCallerNumberOrReceiverNumber(@Param("msisdn") String msisdn);
 
     @Query("SELECT c FROM CallDataRecord c WHERE " +
             "(c.callerNumber = :msisdn OR c.receiverNumber = :msisdn) " +
