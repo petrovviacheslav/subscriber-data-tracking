@@ -1,12 +1,13 @@
 package org.project.services;
 
 import org.project.data.CallDataRecord;
-import org.project.repository.CallDataRecordRepository;
+import org.project.repositories.CallDataRecordRepository;
 import org.project.data.Subscriber;
 import org.project.data.UsageDataReport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -37,11 +38,18 @@ public class UsageDataReportService {
      * @param month  месяц.
      * @return UsageDataReport.
      */
-    public UsageDataReport getUDRByMsisdn(String msisdn, String year, String month) {
+    public UsageDataReport getUDRByMsisdn(String msisdn, String year, String month) throws IllegalArgumentException {
         List<CallDataRecord> cdrs;
+
+        if (!subscriberService.existsByMsisdn(msisdn)) {
+            throw new IllegalArgumentException("Subscriber not found");
+        }
+
         if (year == null || month == null) {
             cdrs = cdrRepository.findByCallerNumberOrReceiverNumber(msisdn);
         } else {
+            validateMonthAndYear(month, year);
+
             int year_int = Integer.parseInt(year);
             int month_int = Integer.parseInt(month);
             DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
@@ -86,6 +94,13 @@ public class UsageDataReportService {
         return udr;
     }
 
+    private void validateMonthAndYear(String month, String year) throws IllegalArgumentException {
+        int year_int = Integer.parseInt(year);
+        int month_int = Integer.parseInt(month);
+        if (year_int < 1900 || month_int > 12 || month_int < 1) {
+            throw new IllegalArgumentException("Invalid parameters (year or month)");
+        }
+    }
     /**
      * UDR всех пользователей по заданному месяцу.
      *
@@ -93,7 +108,7 @@ public class UsageDataReportService {
      * @param month месяц.
      * @return список UsageDataReport.
      */
-    public List<UsageDataReport> getUDRsForAllSubscribers(String year, String month) {
+    public List<UsageDataReport> getUDRsForAllSubscribers(String year, String month) throws IllegalArgumentException {
         List<Subscriber> subscribers = subscriberService.getAllSubscribers();
         List<UsageDataReport> udRs = new ArrayList<>();
 

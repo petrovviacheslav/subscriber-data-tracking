@@ -5,7 +5,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.project.initializers.DataInitializer;
-import org.project.repository.CallDataRecordRepository;
+import org.project.repositories.CallDataRecordRepository;
 import org.project.services.CallDataRecordService;
 import org.project.services.SubscriberService;
 
@@ -19,15 +19,13 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class CallDataRecordServiceTest {
     @Mock
-    private CallDataRecordRepository cdrRepository;
-
-    @Mock
     private SubscriberService subscriberService;
-
     @InjectMocks
     private CallDataRecordService service;
     @InjectMocks
     private DataInitializer dataInitializer;
+    @Mock
+    private CallDataRecordRepository cdrRepository;
 
     List<String> testNumbers = List.of("79991112233", "79876543210");
 

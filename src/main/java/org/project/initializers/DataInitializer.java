@@ -3,9 +3,8 @@ package org.project.initializers;
 import jakarta.annotation.PostConstruct;
 import org.project.data.CallDataRecord;
 import org.project.data.Subscriber;
-import org.project.repository.CallDataRecordRepository;
-import org.project.repository.SubscriberRepository;
-import org.project.services.SubscriberService;
+import org.project.repositories.CallDataRecordRepository;
+import org.project.repositories.SubscriberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +14,7 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Класс инициализации первых десяти абонентов.
+ * Класс инициализации первых десяти абонентов и записей к ним.
  */
 @Component
 public class DataInitializer {

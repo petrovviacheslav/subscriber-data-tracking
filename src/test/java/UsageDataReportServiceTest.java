@@ -1,3 +1,4 @@
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -6,7 +7,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.project.data.CallDataRecord;
 import org.project.data.UsageDataReport;
-import org.project.repository.CallDataRecordRepository;
+import org.project.repositories.CallDataRecordRepository;
+import org.project.services.SubscriberService;
 import org.project.services.UsageDataReportService;
 
 import java.time.LocalDateTime;
@@ -14,8 +16,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
@@ -28,6 +29,14 @@ class UsageDataReportServiceTest {
 
     @InjectMocks
     private UsageDataReportService service;
+
+    @Mock
+    private SubscriberService subscriberService;
+
+    @BeforeEach
+    void setUp() {
+        when(subscriberService.existsByMsisdn("79991112233")).thenReturn(true);
+    }
 
     @Test
     @DisplayName("Получение UDR для абонента без звонков")
@@ -50,7 +59,7 @@ class UsageDataReportServiceTest {
 
         List<CallDataRecord> records = List.of(
                 createCDR("01", "79991112233", "79876543210", LocalDateTime.parse("2025-03-02T00:00:00", formatter), 5),
-                createCDR("02", "79876543210", "79991112233", LocalDateTime.parse("2025-03-07T00:00:00", formatter),3)
+                createCDR("02", "79876543210", "79991112233", LocalDateTime.parse("2025-03-07T00:00:00", formatter), 3)
         );
 
         when(cdrRepository.findByMsisdnAndPeriod(anyString(), any(), any()))

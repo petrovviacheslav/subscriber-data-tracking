@@ -1,4 +1,3 @@
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -8,9 +7,8 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.project.data.Subscriber;
 import org.project.initializers.DataInitializer;
-import org.project.repository.CallDataRecordRepository;
+import org.project.repositories.CallDataRecordRepository;
 import org.project.services.SubscriberService;
 
 import java.util.List;

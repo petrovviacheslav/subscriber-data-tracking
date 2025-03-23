@@ -9,13 +9,16 @@
    HTTP/1.1 202 
    Headers
    
+   HTTP/1.1 200 
+   Headers
+
    {
-   "status": "IN_PROGRESS",
-   "requestId": "1e3e8126-2157-470f-aefa-cc99fd64afc0",
-   "message": "Report generation started"
+   "message": "Report created",
+   "requestId": "ea97433f-8b77-4c55-adf2-fef55f95e2cc",
+   "status": "SUCCESSFUL"
    }
    ```
-
+   Отчёт находится в ```reports/```
 2. Запрос:
    ```
    GET http://localhost:8080/api/udr/by-msisdn?msisdn=79996667755

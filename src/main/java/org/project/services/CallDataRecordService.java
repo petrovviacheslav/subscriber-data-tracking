@@ -1,12 +1,9 @@
 package org.project.services;
 
 import com.opencsv.CSVWriter;
-import jakarta.annotation.PostConstruct;
 
 import org.project.data.CallDataRecord;
-import org.project.data.Subscriber;
-import org.project.repository.CallDataRecordRepository;
-import org.project.repository.SubscriberRepository;
+import org.project.repositories.CallDataRecordRepository;
 import org.springframework.stereotype.Service;
 
 import java.io.FileWriter;
@@ -15,9 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
 
 /**
@@ -45,7 +40,7 @@ public class CallDataRecordService {
      * @return уникальный UUID.
      */
     public UUID generateCdrReport(String msisdn, LocalDateTime start, LocalDateTime end)
-            throws IOException {
+            throws IllegalArgumentException, IOException {
 
         validateRequest(msisdn, start, end);
 
@@ -83,7 +78,7 @@ public class CallDataRecordService {
      *
      * @throws IllegalArgumentException Если абонента нет в базе данных или разговор длился отрицательное время.
      */
-    private void validateRequest(String msisdn, LocalDateTime start, LocalDateTime end) {
+    private void validateRequest(String msisdn, LocalDateTime start, LocalDateTime end) throws IllegalArgumentException {
         if (!subscriberService.existsByMsisdn(msisdn)) {
             throw new IllegalArgumentException("Subscriber not found");
         }

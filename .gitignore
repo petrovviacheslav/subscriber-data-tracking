@@ -10,7 +10,6 @@ build/resolvedMainClassName
 
 !src/**/build/
 .idea
-reports
 
 # Ignore Gradle GUI config
 gradle-app.setting

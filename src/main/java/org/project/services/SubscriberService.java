@@ -1,7 +1,7 @@
 package org.project.services;
 
 import org.project.data.Subscriber;
-import org.project.repository.SubscriberRepository;
+import org.project.repositories.SubscriberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

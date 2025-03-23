@@ -1,9 +1,8 @@
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.project.ApplicationStarter;
 import org.project.data.CallDataRecord;
-import org.project.data.Subscriber;
-import org.project.repository.CallDataRecordRepository;
+import org.project.repositories.CallDataRecordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
@@ -13,7 +12,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
 
 @DataJpaTest
 @ContextConfiguration(classes = ApplicationStarter.class)
@@ -26,6 +24,7 @@ class CallDataRecordRepositoryTest {
     private CallDataRecordRepository repository;
 
     @Test
+    @DisplayName("Проверка поиска CDR по номеру абонента и период")
     void findByMsisdnAndPeriod_shouldReturnFilteredResults() {
         LocalDateTime start = LocalDateTime.of(2025, 3, 1, 0, 0);
         LocalDateTime end = LocalDateTime.of(2025, 3, 31, 23, 59);
@@ -53,6 +52,7 @@ class CallDataRecordRepositoryTest {
 
 
     @Test
+    @DisplayName("Проверка поиска CDR по номеру абонента среди callerNumber и receiverNumber")
     void findOnlyCallerOrReceiver_shouldReturnCDRbyCallerOrReceiver() {
         LocalDateTime start = LocalDateTime.of(2025, 3, 1, 0, 0);
         LocalDateTime end = LocalDateTime.of(2025, 3, 31, 23, 59);

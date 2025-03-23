@@ -1,7 +1,8 @@
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.project.ApplicationStarter;
 import org.project.data.Subscriber;
-import org.project.repository.SubscriberRepository;
+import org.project.repositories.SubscriberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
@@ -20,6 +21,7 @@ class SubscriberRepositoryTest {
     private SubscriberRepository repository;
 
     @Test
+    @DisplayName("Проверка наличия в базе данных абонента")
     void checkByMsisdn_shouldReturnExistingResults() {
         Subscriber newSub = new Subscriber("79991112233");
 

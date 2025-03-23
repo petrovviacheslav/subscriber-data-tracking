@@ -2,11 +2,11 @@ package org.project.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.project.services.CallDataRecordService;
-import org.project.services.SubscriberService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.UUID;
@@ -37,36 +37,24 @@ public class CdrReportController {
     ) {
         try {
             UUID reportId = cdrService.generateCdrReport(msisdn, start, end);
-            return ResponseEntity.accepted().body(
+            return ResponseEntity.ok().body(
                     Map.of(
-                            "status", "IN_PROGRESS",
-                            "requestId", reportId,
-                            "message", "Report generation started"
+                            "status", "SUCCESSFUL",
+                            "requestId", reportId.toString(),
+                            "message", "Report created"
                     )
             );
-        } catch (Exception e) {
-
+        } catch (IllegalArgumentException | IOException | NullPointerException e) {
             return ResponseEntity.badRequest().body(
                     Map.of(
-                            "error", e.getMessage() != null ? e.getMessage() : "Error when creating the report",
-                            "requestId", UUID.randomUUID()
+                            "status", "ERROR",
+                            "requestId", UUID.randomUUID(),
+                            "message", e.getMessage() != null ? e.getMessage() : "Error when creating the report"
                     )
             );
         }
+
+
     }
 
-    /**
-     * Возвращение статуса отчёта по UUID.
-     *
-     * @param requestId UUID отчёта.
-     *
-     * @return статус и UUID в json формате.
-     */
-    @GetMapping("/{requestId}/status")
-    public ResponseEntity<?> checkStatus(@PathVariable UUID requestId) {
-        return ResponseEntity.ok(Map.of(
-                "status", "COMPLETED",
-                "requestId", requestId
-        ));
-    }
 }
