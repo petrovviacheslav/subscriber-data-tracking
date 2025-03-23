@@ -7,7 +7,6 @@ import org.project.data.UsageDataReport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -101,6 +100,7 @@ public class UsageDataReportService {
             throw new IllegalArgumentException("Invalid parameters (year or month)");
         }
     }
+
     /**
      * UDR всех пользователей по заданному месяцу.
      *

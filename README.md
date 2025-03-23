@@ -41,9 +41,9 @@ ${path-to-project}/build/reports/jacoco/test/html/index.html
 
 ## API Endpoints <a name="api-endpoints"></a>
 
-1. CDR
+1. CDR (CdrReportController)
    - POST ```/api/cdr-reports``` - создать отчёт по номеру абонента за промежуток времени 
-2. UDR
+2. UDR (UsageDataReportController)
    - GET ```/api/udr/by-msisdn``` - вернуть UDR запись абонента за нужный месяц или весь период по номеру телефона
    - GET ```/api/udr/all``` - вернуть UDR записи всех абонентов за определённый месяц
 
